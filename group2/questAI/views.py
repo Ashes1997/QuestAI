@@ -5,7 +5,7 @@ def index(request):
     return render(request, 'questAI/index.html')
 
 def home(request):
-    return HttpResponse("Test for Home Page")
+    return render(request, 'questAI/base.html')
 
 def login(request):
     return HttpResponse("Test for Login Page")
