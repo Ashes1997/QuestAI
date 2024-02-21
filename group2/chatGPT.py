@@ -8,7 +8,7 @@ from openai import OpenAI
 
 client = OpenAI()
 def quest_create(prompt: str):
-    print("Creating flashcard...")
+    print("Creating quest...")
 
     
     completion = client.chat.completions.create(
