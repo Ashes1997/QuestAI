@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-<<<<<<< HEAD
 class Products (models.Model):
     productId= models.IntegerField(unique=True)
     productName = models.CharField(max_length=64)
@@ -40,9 +39,6 @@ class Comments (models.Model):
     def __str__(self):
         return self.commentId
     
-=======
->>>>>>> ShengTest
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)#该实例与USer实例为一对一关系，on_delete=models.CASCADE表明关联的user实例被删除后该实例也自动被删除
