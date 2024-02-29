@@ -8,6 +8,9 @@ class Products (models.Model):
     category = models.CharField(max_length=64)
     image_path = models.URLField()
 
+    def __str__(self):
+        return self.productName
+
 class Baskets (models.Model):
     basketId = models.IntegerField(unique=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,17 +18,26 @@ class Baskets (models.Model):
     price = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity= models.ImageField(default=1)
 
+    def __str__(self):
+        return self.basketId + " " + self.productId + " " + self.username
+
 class Reviews (models.Model):
     reviewId= models.ImageField(unique=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     productId =models.ForeignKey(Products, on_delete=models.CASCADE)
     rating= models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.reviewId
 
 class Comments (models.Model):
     commentId = models.IntegerField(unique=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     productId =models.ForeignKey(Products, on_delete=models.CASCADE)
     commenttext = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.commentId
     
 
 # Create your models here.
