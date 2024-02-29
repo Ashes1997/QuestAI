@@ -15,7 +15,7 @@ class Baskets (models.Model):
     basketId = models.IntegerField(unique=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     productId =models.ForeignKey(Products, on_delete=models.CASCADE)
-    price = models.ForeignKey(Products, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=6,decimal_places=2)
     quantity= models.ImageField(default=1)
 
     def __str__(self):
