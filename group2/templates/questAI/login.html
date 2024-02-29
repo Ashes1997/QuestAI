@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    
+</head>
+<body>
+    <h1>questAI</h1>
+    {% if error_message %}
+    <p class="error_message">{{ error_message }}</p>
+    {% endif %}
+    <form id="login_form" method="post" action="{% url 'questAI:login' %}">
+        {% csrf_token %}
+        Username:<input type="text" name = "username" value="" size="50"/>{# name is the data that identifies the input field. The server can use request.POST['username'] to obtain the input data. #}
+        <br/>
+        Password:<input type="password" name="password" value="" size="50"/>{# type=password indicates that the entered content is overwritten #}
+        <br/>
+        <input type="submit" value="log in"/>{# Submit the form to the server #}
+        <a href="{% url 'questAI:register' %}">if you don't have an account,click here to register</a><br />
+    </form>
+{#    <div>#}
+{#        <a href="{% url 'questAI:register' %}">if you don't have an account,click here to register</a><br />#}
+{#    </div>#}
+</body>
+</html>

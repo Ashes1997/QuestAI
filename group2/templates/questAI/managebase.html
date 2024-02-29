@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>manage</title>
+    {% endblock %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/managebase.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-dark" id="sidebar-wrapper">
+          <div class="sidebar-heading text-white">Management</div>
+          <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Home</a>
+            <a href="{% url 'questAI:add' %}" class="list-group-item list-group-item-action bg-dark text-white">Add</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Delete</a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Change</a>
+            <a href="{% url 'questAI:logout' %}" class="list-group-item list-group-item-action bg-dark text-white">log out</a>
+          </div>
+        </div>
+    </div>
+    
+    {% block body_block %}
+    <div>this is the message</div>
+    {% endblock %}
+
+</body>
+</html>

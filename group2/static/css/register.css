@@ -1,0 +1,69 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style the heading */
+h1 {
+    font-size:80px;
+    color: #5cb85c;
+    margin-left:15rem;
+}
+
+/* Style the form */
+#user_form {
+    background: #fff;
+    padding: 20px;
+    margin-top: 2rem;
+    margin-left: 20rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Style the form fields */
+#user_form input[type='text'],
+#user_form input[type='password'],
+#user_form input[type='email'],
+#user_form input[type='file'] {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Style the submit button */
+#user_form input[type='submit'] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#user_form input[type='submit']:hover {
+    background-color: #4cae4c;
+}
+
+/* Style the 'thank you' message */
+strong {
+    color: #5cb85c;
+}
+
+/* Style the links */
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

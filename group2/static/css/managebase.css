@@ -1,0 +1,19 @@
+/* Sidebar style */
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+}
+.sidebar-heading {
+    text-align: center;
+}
+/* List item styles inside sidebar */
+.list-group-item {
+    width: 100%;
+    text-align:center;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+

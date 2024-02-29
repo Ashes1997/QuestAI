@@ -24,7 +24,10 @@
                     <a class="nav-link" href="{% url 'questAI:login' %}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'questAI:signup' %}">Sign Up</a>
+                    <a class="nav-link" href="{% url 'questAI:register' %}">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'questAI:profile' %}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'questAI:basket' %}">Basket</a>
@@ -40,6 +43,9 @@
         </div>
     </nav>
     
+    <div>
+        <a href="{% url 'questAI:logout' %}">Logout</a><br/>
+    </div>
     <main>
         {% block body_block %}
         <!-- We should put each page's content here-->

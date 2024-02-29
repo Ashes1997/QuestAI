@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends 'questAI/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>profile</title>
+</head>
+{% block body_block %}
+    <ul class="list-group">
+      <li class="list-group-item">Username:{{ user.username }}</li>
+      <li class="list-group-item">Email:{{ user.email }}</li>
+      <li class="list-group-item">First name:{{ user.first_name }}</li>
+      <li class="list-group-item">Last name:{{ user.last_name }}</li>
+      <li class="list-group-item">Address:{{ profile.address }}</li>
+      <li class="list-group-item">Postcode:{{ profile.postcode }}</li>
+    </ul>
+    <a href="{% url 'questAI:edit_profile' %}">Modify Profile</a>
+
+{% endblock %}
+</html>
