@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <h1>Register Here</h1>
+    {% if registered %}{# 即当注册成功时 #}
+    questAI says:<strong>thank you for registering!</strong>
+    <a href="{% url 'questAI:index'%}">Return to the homepage.</a><br />
+        
+    {% else %}{# 未注册时 #}
+    <form id="user_form" method="post" action="{% url 'questAI:register' %}" enctype="multipart/form-data">{# enctype="multipart/form-data允许表单上传文件 #}
+            {% csrf_token %}
+            {{ user_form.as_p }}{# as_p将表单字段渲染为段落的形式 #}
+            {{ profile_form.as_p }}
+            <input type="submit" name="submit" value="register"/>
+    </form>
+        
+    {% endif %}
+</body>
+</html>

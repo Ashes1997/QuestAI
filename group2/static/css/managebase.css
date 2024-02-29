@@ -1,0 +1,21 @@
+/* 侧边栏样式 */
+#sidebar-wrapper {
+    min-height: 100vh; /* 使侧边栏高度至少为视口高度 */
+    width: 250px; /* 设定一个固定的宽度 */
+    /*flex-grow: 1; !* 让侧边栏填充额外空间 *!*/
+}
+.sidebar-heading {
+    text-align: center; /* 水平居中标题 */
+}
+/* 侧边栏内部的列表项样式 */
+.list-group-item {
+    width: 100%; /* 让列表项填充侧边栏的宽度 */
+    text-align:center;
+}
+
+/* 为了确保 body 元素覆盖整个视口高度 */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
