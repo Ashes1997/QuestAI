@@ -1,9 +1,8 @@
-/* Apply a background to the whole page */
 body {
     font-family: 'Arial', sans-serif;
     background: #f4f4f4;
     display: flex;
-    align-items: center; /* 垂直居中 */
+    align-items: center;
     height: 100vh;
 }
 

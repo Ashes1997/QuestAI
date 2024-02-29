@@ -6,9 +6,9 @@ body {
 }
 
 h1 {
-  color: #c09719; /* 标题颜色 */
-  text-align: center; /* 居中标题 */
-  margin-top: 50px; /* 顶部外边距 */
+  color: #c09719;
+  text-align: center;
+  margin-top: 50px;
   font-family: Arial;
   font-style:italic;
   font-weight:bold;

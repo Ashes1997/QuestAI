@@ -14,11 +14,11 @@
     {% endif %}
     <form id="login_form" method="post" action="{% url 'questAI:login' %}">
         {% csrf_token %}
-        Username:<input type="text" name = "username" value="" size="50"/>{# name为识别输入字段的数据，服务端可用request.POST['username']获取输入的数据 #}
+        Username:<input type="text" name = "username" value="" size="50"/>{# name is the data that identifies the input field. The server can use request.POST['username'] to obtain the input data. #}
         <br/>
-        Password:<input type="password" name="password" value="" size="50"/>{# type=password表明输入的内容被覆盖 #}
+        Password:<input type="password" name="password" value="" size="50"/>{# type=password indicates that the entered content is overwritten #}
         <br/>
-        <input type="submit" value="log in"/>{# 将表单提交到服务器 #}
+        <input type="submit" value="log in"/>{# Submit the form to the server #}
         <a href="{% url 'questAI:register' %}">if you don't have an account,click here to register</a><br />
     </form>
 {#    <div>#}

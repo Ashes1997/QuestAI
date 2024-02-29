@@ -6,18 +6,19 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+from questAI.models import UserProfile
+
+
 def index(request):
     return render(request, 'questAI/index.html')
 
+@login_required
 def home(request):
     return render(request, 'questAI/base.html')
 
-# def login(request):
-#     return HttpResponse("Test for Login Page")
-
 
 def register(request):
-    registered = False#标识用户是否注册成功
+    registered = False#Identifies whether the user has successfully registered
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
@@ -25,10 +26,10 @@ def register(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
 
-            user.set_password(user.password)#对密码进行hash处理，将明文转换成安全的形式
+            user.set_password(user.password)#Hash passwords to convert plain text into a secure form
             user.save()
-            profile = profile_form.save(commit=False)#保存不提交数据库，用于设置用户与附加信息的关联
-            profile.user = user#建立user以及profile的关联
+            profile = profile_form.save(commit=False)#Save the database without submitting it, used to associate users with additional information
+            profile.user = user#Establish an association between user and profile
             # if 'picture' in request.FILES:
             #     profile.picture = request.FILES['picture']
             profile.save()
@@ -47,26 +48,26 @@ def register(request):
 
 
 def user_login(request):
-    if request.method == 'POST':#POST请求用于提交表单数据
-        username = request.POST.get('username')#从请求中提取用户名和密码
+    if request.method == 'POST':#POST request is used to submit form data
+        username = request.POST.get('username')#Extract username and password from request
         password = request.POST.get('password')
-        user = authenticate(username=username, password=password)#该函数使用提供的用户名和密码进行用户认证，成功则返回user对象，失败返回None
+        user = authenticate(username=username, password=password)#This function uses the provided username and password for user authentication. If successful, it returns the user object. If it fails, it returns None.
         if user:
-            if user.is_active:#检查用户账号是否活跃（用于管理员暂时停用账号的作用）
-                login(request,user)#将用户标记为已登录状态
+            if user.is_active:#Check whether the user account is active (used for administrators to temporarily deactivate the account)
+                login(request,user)#Mark user as logged in
                 if user.is_staff == True:
                     return redirect(reverse('questAI:manage'))
                 else:
-                    return redirect(reverse('questAI:home'))#重定向到网站首页
+                    return redirect(reverse('questAI:home'))#Redirect to website homepage
             else:
-                return HttpResponse("Your questAI account is disabled.")#提示账户被禁用消息
+                return HttpResponse("Your questAI account is disabled.")
         else:
             print(f"Invalid login details:{username},{password}")
             context={'error_message':"Invalid login details supplied."}
-            return render(request,'questAI/login.html',context)#登录信息无效
+            return render(request,'questAI/login.html',context)
     else:
         return render(request,'questAI/login.html')
-@login_required#限制访问权限，只有当用户已经登录时才能访问这个视图函数，未登录的用户尝试访问这个视图将会自动将用户重定向到登录页面
+@login_required#Restrict access permissions. This view function can only be accessed when the user is logged in. If a user who is not logged in tries to access this view, the user will be automatically redirected to the login page.
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
 @login_required
@@ -74,8 +75,31 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('questAI:login'))
 
-# def signup(request):
-#     return HttpResponse("Test for Sign-Up Page")
+@login_required
+def profile(request):
+    user = request.user
+    user_profile = UserProfile.objects.get(user=user)
+    return render(request,'questAI/profile.html',{'user':request.user,'profile':user_profile})
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST,instance=request.user)
+        profile_form = UserProfileForm(request.POST,instance=request.user.userprofile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('questAI:profile')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=request.user.userprofile)
+    return render(request, 'questAI/edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
 def manage(request):
     return render(request, 'questAI/managebase.html')
 def add(request):
