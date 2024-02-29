@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-<<<<<<< HEAD
 class Products (models.Model):
     productId= models.IntegerField(unique=True)
     productName = models.CharField(max_length=64)
@@ -39,9 +38,6 @@ class Comments (models.Model):
 
     def __str__(self):
         return self.commentId
-    
-=======
->>>>>>> ShengTest
 
 
 class UserProfile(models.Model):
