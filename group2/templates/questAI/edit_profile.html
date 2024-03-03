@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 {% extends 'questAI/base.html' %}
-
-{% block body_block %}
-<h2>Edit Profile</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    <button type="submit">Save changes</button>
-</form>
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
+{% block body_block %}
+    <form method="post" action="{% url 'questAI:edit_profile' %}">
+    {% csrf_token %}
+    <div class="profile-container">
+        {{ user_form.non_field_errors }}
+        {{ profile_form.non_field_errors }}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Username: </strong>{{ user_form.username }}
+                {{ user_form.username.errors }}
+            </li>
+            <li class="list-group-item">
+                <strong>Email:  </strong>{{ user_form.email }}
+            </li>
+            <li class="list-group-item">
+                <strong>First name: </strong>{{ user_form.first_name }}
+                {{ user_form.first_name.errors }}
+            </li>
+            <li class="list-group-item">
+                <strong>Last name: </strong>{{ user_form.last_name }}
+                {{ user_form.last_name.errors }}
+            </li>
+            <li class="list-group-item">
+                <strong>Address: </strong>{{ profile_form.address }}
+            </li>
+            <li class="list-group-item">
+                <strong>Postcode: </strong>{{ profile_form.postcode }}
+                {{ profile_form.postcode.errors }}
+            </li>
+        </ul>
+    </div>
+    <div class="modify-link-container">
+        <button type="submit" class="modify-link">Save</button>
+    </div>
+    </form>
+{% endblock %}
+

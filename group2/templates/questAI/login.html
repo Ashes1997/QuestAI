@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <h1>questAI</h1>
@@ -16,13 +16,29 @@
         {% csrf_token %}
         Username:<input type="text" name = "username" value="" size="50"/>{# name is the data that identifies the input field. The server can use request.POST['username'] to obtain the input data. #}
         <br/>
-        Password:<input type="password" name="password" value="" size="50"/>{# type=password indicates that the entered content is overwritten #}
+        Password:
+        <div class="password-container">
+            <input type="password" id="password" name="password" value="" size="50"/>{# type=password indicates that the entered content is overwritten #}
+            <i class="fas fa-eye password-toggle" onclick="togglePasswordVisibility()"></i>{# Click this icon to toggle the visibility of your password #}
+        </div>
         <br/>
         <input type="submit" value="log in"/>{# Submit the form to the server #}
-        <a href="{% url 'questAI:register' %}">if you don't have an account,click here to register</a><br />
+        <a href="{% url 'questAI:register' %}">If you don't have an account,click here to register</a><br />
     </form>
-{#    <div>#}
-{#        <a href="{% url 'questAI:register' %}">if you don't have an account,click here to register</a><br />#}
-{#    </div>#}
 </body>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');{# Get the password input box element with id password and store it in the variable passwordInput #}
+            var toggleIcon = document.querySelector('.password-toggle');{# Select the element with class name .password-toggle (i.e. the eye icon) and store it in the variable toggleIcon #}
+            if (passwordInput.type === 'password'){{# Password is currently hidden #}
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');{# Replace eye icon #}
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </html>

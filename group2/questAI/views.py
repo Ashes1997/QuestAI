@@ -1,12 +1,13 @@
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 from django.http import HttpResponse
-from questAI.forms import UserForm,UserProfileForm
-from django.contrib.auth import authenticate,login,logout
+from questAI.forms import UserForm, UserProfileForm, UserEditForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-
 from questAI.models import UserProfile
+from django.contrib import messages
 
 
 def index(request):
@@ -85,21 +86,36 @@ def profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST,instance=request.user)
+        user_form = UserEditForm(request.POST,instance=request.user)
         profile_form = UserProfileForm(request.POST,instance=request.user.userprofile)
-
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            return redirect('questAI:profile')
+            return redirect(reverse('questAI:profile'))
     else:
-        user_form = UserForm(instance=request.user)
+        user_form = UserEditForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
     return render(request, 'questAI/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
 
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():#Verify that the old password entered by the user is correct，and whether the new password meets the requirements
+            user = form.save()
+            update_session_auth_hash(request, user)#Ensure users are not logged out after changing their password
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect(reverse('questAI:profile'))
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'questAI/change_password.html', {
+        'form': form
+    })
 def manage(request):
     return render(request, 'questAI/managebase.html')
 def add(request):
