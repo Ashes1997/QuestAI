@@ -1,20 +1,47 @@
 <!DOCTYPE html>
 {% extends 'questAI/base.html' %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>profile</title>
-</head>
-{% block body_block %}
-    <ul class="list-group">
-      <li class="list-group-item">Username:{{ user.username }}</li>
-      <li class="list-group-item">Email:{{ user.email }}</li>
-      <li class="list-group-item">First name:{{ user.first_name }}</li>
-      <li class="list-group-item">Last name:{{ user.last_name }}</li>
-      <li class="list-group-item">Address:{{ profile.address }}</li>
-      <li class="list-group-item">Postcode:{{ profile.postcode }}</li>
-    </ul>
-    <a href="{% url 'questAI:edit_profile' %}">Modify Profile</a>
-
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
-</html>
+{% block body_block %}
+    <div class="profile-container">
+        <form>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Username: </strong>
+                    <input type="text" value="{{ user.username }}" readonly>
+                </li>
+                <li class="list-group-item">
+                    <strong>Email:  </strong>
+                    <input type="email" value="{{ user.email }}" readonly>
+                </li>
+                <li class="list-group-item">
+                    <strong>First name: </strong>
+                    <input type="text" value="{{ user.first_name }}" readonly>
+                </li>
+                <li class="list-group-item">
+                    <strong>Last name: </strong>
+                    <input type="text" value="{{ user.last_name }}" readonly>
+                </li>
+                <li class="list-group-item">
+                    <strong>Address: </strong>
+                    <input type="text" value="{{ profile.address }}" readonly>
+                </li>
+                <li class="list-group-item">
+                    <strong>Postcode: </strong>
+                    <input type="text" value="{{ profile.postcode }}" readonly>
+                </li>
+            </ul>
+            <div>
+                <a href="{% url 'questAI:change_password' %}" class="change-password">Change your password</a>
+            </div>
+        </form>
+    </div>
+    <div class="modify-link-container">
+        <a href="{% url 'questAI:edit_profile' %}" class="modify-link">Edit Profile</a>
+    </div>
+    
+{% endblock %}
+

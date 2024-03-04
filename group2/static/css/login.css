@@ -84,6 +84,19 @@ h1 {
     text-decoration: underline;
 }
 
+.password-container {
+    position: relative; /* Relative positioning */
+    display: flex;
+    align-items: center;
+}
+
+/* Eye icon style */
+.password-toggle {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+
 
 
 

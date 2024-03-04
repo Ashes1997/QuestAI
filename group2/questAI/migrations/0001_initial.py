@@ -17,34 +17,86 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Baskets',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('basketId', models.IntegerField(unique=True)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('quantity', models.ImageField(default=1, upload_to='')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("productId", models.IntegerField(unique=True)),
+                ("productName", models.CharField(max_length=64)),
+                ("productDescription", models.CharField(max_length=500)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=6)),
+                ("category", models.CharField(max_length=64)),
+                ("image_path", models.URLField()),
             ],
         ),
         migrations.CreateModel(
-            name='Comments',
+            name="Comments",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('commentId', models.IntegerField(unique=True)),
-                ('commenttext', models.CharField(max_length=500)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("commentId", models.IntegerField(unique=True)),
+                ("commenttext", models.CharField(max_length=500)),
+                (
+                    "username",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "productId",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="questAI.products",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Products',
+            name="Baskets",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('productId', models.IntegerField(unique=True)),
-                ('productName', models.CharField(max_length=64)),
-                ('productDescription', models.CharField(max_length=500)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('category', models.CharField(max_length=64)),
-                ('image_path', models.URLField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("basketId", models.IntegerField(unique=True)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=6)),
+                ("quantity", models.ImageField(default=1, upload_to="")),
+                (
+                    "username",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "productId",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="questAI.products",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Reviews',
+            name="Reviews",
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('reviewId', models.ImageField(unique=True, upload_to='')),

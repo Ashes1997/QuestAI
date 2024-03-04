@@ -12,7 +12,7 @@
     questAI says:<strong>thank you for registering!</strong>
     <a href="{% url 'questAI:index'%}">Return to the homepage.</a><br />
         
-    {% else %}{# 未注册时 #}
+    {% else %}{# When not registered #}
     <form id="user_form" method="post" action="{% url 'questAI:register' %}" enctype="multipart/form-data">{# enctype="multipart/form-data Allow form to upload files #}
             {% csrf_token %}
             {{ user_form.as_p }}{# as_p Render form fields as paragraphs #}

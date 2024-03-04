@@ -1,0 +1,53 @@
+/* profile.css */
+.profile-container {
+    width: 100%;
+    max-width: 600px; /* Adjust this value to fit your design */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add some padding */
+    box-shadow: none; /* Remove the gray box shadow */
+}
+
+.list-group {
+    list-style: none; /* Remove list bullet */
+    padding: 0;
+    margin: 0;
+}
+
+.list-group-item {
+    text-align: left; /* Align text to the left */
+    margin-bottom: 10px; /* Add some space between items */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 20px); /* Adjust width to fit container, accounting for padding */
+    padding: 5px; /* Add some padding inside the input box */
+    margin: 0; /* Remove margin */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 4px; /* Round the corners */
+}
+
+.modify-link {
+    display: inline-block; /* Makes the link behave like an inline-block element for applying padding */
+    margin-top: 20px; /* Spacing above the link */
+    padding: 10px 20px; /* Padding inside the button */
+    background-color: #067e0b; /* Bootstrap primary button color */
+    color: white; /* Text color for the button */
+    text-align: center; /* Center the link text if needed */
+    text-decoration: none; /* Removes underline from the link */
+    border-radius: 5px; /* Rounded corners for the button */
+    font-weight: bold; /* Makes the button text bold */
+    transition: background-color 0.3s; /* Smooth background color change on hover */
+}
+
+.modify-link:hover {
+    background-color: #90c40e; /* Darker shade for button background on hover */
+    text-decoration: none; /* Ensures the underline doesn't re-appear on hover */
+    color: white; /* Ensures the text color remains white on hover */
+}
+.modify-link-container {
+    text-align: center; /* Center aligns the content inside the container */
+    margin-top: 20px; /* Adds some space above the container */
+}
+
