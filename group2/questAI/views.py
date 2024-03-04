@@ -6,7 +6,8 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from questAI.models import UserProfile
+
+from questAI.models import UserProfile, Products
 
 
 def index(request):
@@ -14,7 +15,8 @@ def index(request):
 
 @login_required
 def home(request):
-    return render(request, 'questAI/base.html')
+    products = Products.objects.all()
+    return render(request, 'questAI/home.html', {'products': products})
 
 
 def register(request):

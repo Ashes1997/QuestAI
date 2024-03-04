@@ -1,0 +1,61 @@
+<!DOCTYPE HTML!>
+
+{% extends 'questAI/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block css %}
+    <style>
+
+        .product {
+            display: flex;
+            margin: 0 2%; 
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        .product-image {
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+        .product-image img {
+            width: 100px; 
+            height: auto;
+        }
+        .add-to-cart img {
+        width: 100px; 
+        height: auto;
+        }
+    </style>
+    {%endblock%}
+
+{% block body_block %}
+
+<body>
+    <h1>Products</h1>
+    {% for product in products %}
+    <div class="product">
+        <div class="product-image">
+            <img src="{{ product.image_path }}" alt="{{ product.productName }}">
+        </div>
+        <div class="product-details">
+            <h2>{{ product.productName }}</h2>
+            <p>{{ product.productDescription }}</p>
+            <p>Price: £{{ product.price }}</p>
+        </div>
+        <button class="add-to-cart">
+            <img src="{% static 'images/Add_to_cart.png' %}" alt="Add to Cart">
+        </button>
+    </div>
+    {% endfor %}
+</body>
+
+{%endblock%}
+</html>
