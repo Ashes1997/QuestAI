@@ -43,7 +43,7 @@
     {% for product in products %}
     <div class="product">
         <div class="product-image">
-            <img src="{{ product.image_path }}" alt="{{ product.productName }}">
+            <img src="{{ product.image.url }}" alt="{{ product.productName }}">
         </div>
         <div class="product-details">
             <h2>{{ product.productName }}</h2>

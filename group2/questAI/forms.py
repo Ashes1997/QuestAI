@@ -96,4 +96,8 @@ class ProductForm(forms.ModelForm):
     # image_path = forms.CharField(required=False)
     class Meta:
         model = Products
-        fields = ['productId', 'productName', 'productDescription', 'price', 'category', 'image_path']
+        fields = ['productId', 'productName', 'productDescription', 'price', 'category', 'image']
+
+    # def __init__(self, *args, **kwargs):
+    #     super(ProductForm, self).__init__(*args, **kwargs)
+    #     self.fields['productId'].disabled = True

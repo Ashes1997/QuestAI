@@ -10,10 +10,11 @@
             {% for product in products %}
             <div class="col-md-4 mb-3"> 
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ product.image_path }}" class="card-img-top" alt="{{ product.productName }}">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.productName }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.productName }}</h5>
                         <p class="card-text">{{ product.productDescription }}</p>
+                        <p class="card-text">£{{ product.price }}</p>
                         <a href="{% url 'questAI:edit_product' product.productId%}" class="btn btn-primary">Edit</a>
                         <form action="{% url 'questAI:delete_product' product.productId %}" method="post">
                             {% csrf_token %}

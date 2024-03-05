@@ -1,4 +1,7 @@
+from django.conf.urls.static import static
 from django.urls import path
+
+from group2 import settings
 from questAI import views
 
 app_name = 'questAI'

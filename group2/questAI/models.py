@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 class Products (models.Model):
-    productId= models.IntegerField(unique=True)
-    productName = models.CharField(max_length=64)
+    # productId= models.IntegerField(unique=True)
+    productId = models.AutoField(primary_key=True)
+
+    productName = models.CharField(max_length=64, unique= True)
     productDescription = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=6,decimal_places=2)
     category = models.CharField(max_length=64)
-    image_path = models.URLField()
+    # image_path = models.URLField()
+    image = models.ImageField(upload_to='product_images/')
 
     def __str__(self):
         return self.productName

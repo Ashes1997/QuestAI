@@ -125,15 +125,16 @@ def manage_home(request):
     return render(request, 'questAI/manage_home.html', {'products': products})
 
 def edit_product(request, product_id):
-    product = get_object_or_404(Products, productId=product_id)
+    product = get_object_or_404(Products, pk=product_id)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect(reverse('questAI:manage_home'))
     else:
         form = ProductForm(instance=product)
-    return render(request, 'questAI/edit_product.html',{'form':form})
+    return render(request, 'questAI/edit_product.html', {'form': form})
+
 @require_POST
 @login_required
 def delete_product(request, product_id):
