@@ -15,10 +15,12 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('restricted/',views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
-    path('manage/', views.manage, name='manage'),
     path('add/', views.add, name='add'),
     path('profile/', views.profile, name='profile'),
-    path('edit_profile/', views.edit_profile, name='edit_profile'),
-    path('change_password/', views.change_password, name='change_password'),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('change-password/', views.change_password, name='change_password'),
+    path('manage-home/',views.manage_home, name='manage_home'),
+    path('edit-product/<int:product_id>', views.edit_product, name='edit_product'),
+    path('delete-product/<int:product_id>', views.delete_product, name='delete_product'),
 ]
 

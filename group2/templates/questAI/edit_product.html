@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends 'questAI/managebase.html' %}
+{% load static %}
+{% block title %}
+    <title>edit product</title>
+{% endblock %}
+{% block body_block %}
+    <h2>Edit Product</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}

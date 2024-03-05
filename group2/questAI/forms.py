@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
-from questAI.models import UserProfile
+from questAI.models import UserProfile, Products
 from django.contrib.auth.models import User
 import re
 
@@ -91,3 +91,9 @@ class UserEditForm(forms.ModelForm):
         if not re.match("^[a-zA-Z]+$", last_name):
             raise ValidationError("Last name must only contain letters.")
         return last_name
+
+class ProductForm(forms.ModelForm):
+    # image_path = forms.CharField(required=False)
+    class Meta:
+        model = Products
+        fields = ['productId', 'productName', 'productDescription', 'price', 'category', 'image_path']

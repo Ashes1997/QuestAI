@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render
-from django.http import HttpResponse
-from questAI.forms import UserForm, UserProfileForm, UserEditForm
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_POST
+
+from questAI.forms import UserForm, UserProfileForm, UserEditForm, ProductForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -59,7 +61,7 @@ def user_login(request):
             if user.is_active:#Check whether the user account is active (used for administrators to temporarily deactivate the account)
                 login(request,user)#Mark user as logged in
                 if user.is_staff == True:
-                    return redirect(reverse('questAI:manage'))
+                    return redirect(reverse('questAI:manage_home'))
                 else:
                     return redirect(reverse('questAI:home'))#Redirect to website homepage
             else:
@@ -118,8 +120,30 @@ def change_password(request):
     return render(request, 'questAI/change_password.html', {
         'form': form
     })
-def manage(request):
-    return render(request, 'questAI/managebase.html')
+def manage_home(request):
+    products = Products.objects.all()
+    return render(request, 'questAI/manage_home.html', {'products': products})
+
+def edit_product(request, product_id):
+    product = get_object_or_404(Products, productId=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('questAI:manage_home'))
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'questAI/edit_product.html',{'form':form})
+@require_POST
+@login_required
+def delete_product(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Products, pk=product_id)
+        product.delete()
+        return HttpResponseRedirect(reverse('questAI:manage_home'))
+    else:
+        return HttpResponseRedirect(reverse('questAI:manage_home'))
+
 def add(request):
     return render(request, 'questAI/add.html')
 def basket(request):
