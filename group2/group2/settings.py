@@ -137,3 +137,6 @@ REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL='questAI:index'
 LOGIN_URL = 'questAI:login'
 # LOGIN_URL = 'auth_login'
+
+# Google Maps API
+GOOGLE_MAPS_API_KEY = os.getenv('AIzaSyBv2eFToGUSwXdu_W0h4HgDmZvY28FX5ro')

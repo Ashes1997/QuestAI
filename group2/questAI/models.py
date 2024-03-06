@@ -39,7 +39,6 @@ class Comments (models.Model):
     def __str__(self):
         return self.commentId
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)#This instance has a one-to-one relationship with the USer instance. on_delete=models.CASCADE indicates that the instance will be automatically deleted after the associated user instance is deleted.
     address = models.CharField(max_length=512)

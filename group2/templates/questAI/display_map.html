@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBv2eFToGUSwXdu_W0h4HgDmZvY28FX5ro&callback=initMap&libraries=&v=weekly" async defer></script>
+
+    <script>
+        console.log(google_maps_api_key)
+      let startLocation = '1600 Amphitheatre Parkway, Mountain View, CA'
+      let endLocations = '1 Infinite Loop, Cupertino, CA; 350 5th Ave, New York, NY 10118; 1111 S Figueroa St, Los Angeles, CA 90015'
+
+      // Check if endLocations is not an array, and convert if necessary
+      if (!Array.isArray(endLocations)) {
+        endLocations = endLocations ? [endLocations] : [];
+      }
+      
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 6,
+          center: { lat: 37.77, lng: -122.447 }, // Update this center as needed
+        });
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+        let waypoints = endLocations.map(location => ({
+          location: location,
+          stopover: true
+        }));
+
+        // Remove the last destination from waypoints
+        if(waypoints.length > 1) waypoints.pop();
+        
+        const start = startLocation;
+        const end = endLocations[endLocations.length - 1];
+
+        directionsService.route({
+            origin: start,
+            destination: end,
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING,
+          }, (response, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+              directionsRenderer.setDirections(response);
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    </script>
+</head>
+<body>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+</body>
+</html>

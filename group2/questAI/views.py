@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -130,4 +131,18 @@ def topup(request):
 
 def checkout(request):
     return HttpResponse("Test for Checkout Page")
+
+# Test page for google maps api
+def enter_locations(request):
+    if request.method == "POST":
+        # Assuming you have a form to capture 'start_location' and 'end_locations' (as a list)
+        start_location = request.POST.get('start_location')
+        end_locations = request.POST.getlist('end_locations[]')  # Adjust based on your form
+        # Redirect to the map view with the locations as arguments
+        return render(request, "questAI/display_map.html", {
+            "start_location": start_location,
+            "end_locations": end_locations,
+            "google_maps_api_key": settings.GOOGLE_MAPS_API_KEY
+        })
+    return render(request, "questAI/enter_locations.html")
 
