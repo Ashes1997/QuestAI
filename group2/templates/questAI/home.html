@@ -87,14 +87,14 @@
 
 <script>
     function addToBasket(productId) {
-        var baseUrl = "/questAI/add_to_basket/"; // Base part of the URL defined directly
-        var url = baseUrl + productId + '/'; // Append the product ID dynamically
+        var baseUrl = "/questAI/add_to_basket/"; 
+        var url = baseUrl + productId + '/'; 
         $.ajax({
             url: url,
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'product_id': productId // Assuming your view expects this as well
+                'product_id': productId 
             },
             success: function(response) {
                 alert("Product added to basket!");
