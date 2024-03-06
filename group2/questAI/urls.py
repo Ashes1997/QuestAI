@@ -25,5 +25,7 @@ urlpatterns = [
     path('manage-home/',views.manage_home, name='manage_home'),
     path('edit-product/<int:product_id>', views.edit_product, name='edit_product'),
     path('delete-product/<int:product_id>', views.delete_product, name='delete_product'),
+    path('add_to_basket/<int:product_id>/', views.add_to_basket, name='add_to_basket'),
+
 ]
 

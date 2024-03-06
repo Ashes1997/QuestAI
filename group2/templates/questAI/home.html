@@ -68,19 +68,42 @@
     {% for product in products %}
     <div class="product">
         <div class="product-image">
-            <img src="{{ product.image.url }}" alt="{{ product.productName }}">
+            <img src="{{ product.image.url }}" alt="{{ product.productName }}" data-product-id="{{ product.id }}" >
         </div>
         <div class="product-details">
             <h2>{{ product.productName }}</h2>
             <p>{{ product.productDescription }}</p>
             <p>Price: £{{ product.price }}</p>
         </div>
-        <button class="add-to-cart">
-            <span class="add-to-cart-text">Add to Cart</span>
-        </button>
+        <button class="add-to-cart" onclick="addToBasket({{ product.productId }});">Add to Cart</button>
+
     </div>
     {% endfor %}
 </body>
 
+{%endblock%}
+
+{%block js%}
+
+<script>
+    function addToBasket(productId) {
+        var baseUrl = "/questAI/add_to_basket/"; // Base part of the URL defined directly
+        var url = baseUrl + productId + '/'; // Append the product ID dynamically
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'product_id': productId // Assuming your view expects this as well
+            },
+            success: function(response) {
+                alert("Product added to basket!");
+            },
+            error: function(xhr, errmsg, err) {
+                alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
+    </script>
 {%endblock%}
 </html>

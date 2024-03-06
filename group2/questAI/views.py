@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.http import require_POST
 
 from questAI.forms import UserForm, UserProfileForm, UserEditForm, ProductForm
@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from questAI.models import UserProfile, Products
+from questAI.models import UserProfile, Products, Baskets
 from django.contrib import messages
 
 
@@ -155,4 +155,21 @@ def topup(request):
 
 def checkout(request):
     return HttpResponse("Test for Checkout Page")
+
+def add_to_basket(request, product_id):
+    print("Adding to basket...")
+    if request.method == "POST":
+        product = get_object_or_404(Products, pk=product_id)
+        user = request.user
+        # Check if the product is already in the basket
+        basket_item, created = Baskets.objects.get_or_create(
+            username=user, productId=product,
+            defaults={'price': product.price, 'quantity': 1})
+        if not created:
+            # If the item is already in the basket, increase the quantity
+            basket_item.quantity += 1
+            basket_item.save()
+        return JsonResponse({'status': 'success', 'message': 'Product added to basket'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
