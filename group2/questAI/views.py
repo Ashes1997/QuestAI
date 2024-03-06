@@ -148,7 +148,26 @@ def delete_product(request, product_id):
 def add(request):
     return render(request, 'questAI/add.html')
 def basket(request):
-    return HttpResponse("Test for Basket Page")
+
+    if not request.user.is_authenticated:
+        return render(request, 'questAI/login.html')
+
+
+    basket_items = Baskets.objects.filter(username=request.user)
+    
+
+    total_price = 0
+    for item in basket_items:
+        item.total_price = item.price * item.quantity
+        total_price += item.total_price
+
+
+    context = {
+        'basket_items': basket_items,
+        'total_price': total_price
+    }
+
+    return render(request, 'questAI/basket.html', context)
 
 def topup(request):
     return HttpResponse("Test for Top Up Page")

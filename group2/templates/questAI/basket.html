@@ -1,0 +1,56 @@
+{% extends 'questAI/base.html' %}
+{% block title %}Basket{% endblock %}
+{% block css %}
+<style>
+    .basket-image {
+        width: 100px; 
+        height: auto;
+    } 
+    .basket-table{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .container1{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+</style>
+    {%endblock%}
+{%block body_block%}
+<div class = container1>
+<h1>Your Basket</h1>
+<table class= basket-table>
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Product Details</th>
+            <th>Individual Price</th>
+            <th>Quantity Required</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in basket_items %}
+        <tr>
+            <td><img src="{{ item.productId.image.url }}" alt="{{ item.productId.productName }}" class = "basket-image"></td>
+            <td>{{ item.productId.productName }}</td>
+            <td>{{ item.productId.productDescription }}</td>
+            <td>£{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>£{{ item.total_price }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Your basket is empty.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div>
+    <strong>Total Price: £{{ total_price }}</strong>
+</div>
+<!-- Add any other content or scripts here -->
+</body>
+</div>
+{%endblock%}
