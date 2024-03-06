@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from questAI.models import UserProfile, Products, Baskets
+from questAI.models import UserProfile, Products, Baskets, Comments
 from django.contrib import messages
 
 
@@ -173,3 +173,8 @@ def add_to_basket(request, product_id):
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
+def product_detail(request, product_id):
+    product = Products.objects.get(productId=product_id)
+    comments = Comments.objects.filter(productId=product)
+    context = {'product': product, 'comments': comments}
+    return render(request, 'questAI/product_detail.html', context)

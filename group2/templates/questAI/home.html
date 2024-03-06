@@ -70,7 +70,7 @@
         <div class="product-image">
             <img src="{{ product.image.url }}" alt="{{ product.productName }}" data-product-id="{{ product.id }}" >
         </div>
-        <div class="product-details">
+        <div class="product-details" href= "{% url 'questAI:product_detail' product.productId %}">
             <h2>{{ product.productName }}</h2>
             <p>{{ product.productDescription }}</p>
             <p>Price: £{{ product.price }}</p>
