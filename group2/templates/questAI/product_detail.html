@@ -5,7 +5,7 @@
     <h2>{{ product.productName }}</h2>
     <p>{{ product.productDescription }}</p>
     <p>Price: £{{ product.price }}</p>
-    <img src="{{ product.image_path }}" alt="{{ product.productName }}">
+    <img src="{{ product.image.url }}" alt="{{ product.productName }}">
 
 
     {% for comment in comments %}
