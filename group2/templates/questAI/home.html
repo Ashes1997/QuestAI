@@ -78,11 +78,12 @@
         <div class="product-image">
             <img src="{{ product.image.url }}" alt="{{ product.productName }}" data-product-id="{{ product.id }}" >
         </div>
-        <a class="product-details" href="{% url 'questAI:product_detail' product.productId %}">
-            <h2>{{ product.productName }}</h2>
-        </a>
+            <a class="product-details" href="{% url 'questAI:product_detail' product.productId %}">{{ product.productName }}
+            </a>
+     
             <p class="product-description">{{ product.productDescription }}</p>
             <p>Price: £{{ product.price }}</p>
+       
         
         <button class="add-to-cart" onclick="addToBasket({{ product.productId }});">Add to Cart</button>
     </div>
