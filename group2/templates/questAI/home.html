@@ -57,6 +57,14 @@
         .add-to-cart-text {
             margin-right: 8px;
         }
+        
+        .product-description{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+        }
           
     </style>
     {%endblock%}
@@ -72,7 +80,7 @@
         </div>
         <div class="product-details">
             <h2>{{ product.productName }}</h2>
-            <p>{{ product.productDescription }}</p>
+            <p class="product-description">{{ product.productDescription }}</p>
             <p>Price: £{{ product.price }}</p>
         </div>
         <button class="add-to-cart" onclick="addToBasket({{ product.productId }});">Add to Cart</button>

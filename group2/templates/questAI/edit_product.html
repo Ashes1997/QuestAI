@@ -4,9 +4,12 @@
 {% block title %}
     <title>edit product</title>
 {% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/editproduct.css' %}">
+{% endblock %}
+
 {% block body_block %}
-    <h2>Edit Product</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form id="edit_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Update</button>

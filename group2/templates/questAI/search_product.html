@@ -2,16 +2,19 @@
 {% extends 'questAI/managebase.html' %}
 {% load static %}
 {% block title %}
-    <title>manage home</title>
+    <title>Search Product</title>
 {% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/managehome.css' %}">
 {% endblock %}
+
 {% block body_block %}
+    
     <div class="container">
         <div class="row">
             {% for product in products %}
-            <div class="col-md-4 mb-3"> 
+            <div class="col-md-4 mb-3">
                 <div class="card" style="width: 18rem;">
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.productName }}">
                     <div class="card-body">
@@ -28,8 +31,9 @@
                     </div>
                 </div>
             </div>
+            {% empty %}
+                <p>No products found for "{{ query }}".</p>
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}

@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -140,13 +142,32 @@ def edit_product(request, product_id):
 def delete_product(request, product_id):
     if request.method == 'POST':
         product = get_object_or_404(Products, pk=product_id)
+        if product.image:
+            image_path = product.image.path
+            if os.path.isfile(image_path):
+                os.remove(image_path)
         product.delete()
         return HttpResponseRedirect(reverse('questAI:manage_home'))
     else:
         return HttpResponseRedirect(reverse('questAI:manage_home'))
 
-def add(request):
-    return render(request, 'questAI/add.html')
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('questAI:manage_home'))
+    else:
+        form = ProductForm()
+    return render(request, 'questAI/add_product.html',{'form':form})
+
+def search_product(request):
+    query = request.GET.get('query', '')
+    if query:
+        products = Products.objects.filter(productName__icontains=query)
+    else:
+        products = Products.objects.all()
+    return render(request, 'questAI/search_product.html', {'products': products, 'query': query})
 def basket(request):
     return HttpResponse("Test for Basket Page")
 

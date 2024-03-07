@@ -1,0 +1,68 @@
+#content-wrapper {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#add_form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #f7f7f7;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.2em;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1.2em;
+}
+
+.btn-primary {
+    background-color: #13860f;
+    border-color: #599616;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.btn-primary:hover {
+    background-color: #34c22e;
+    border-color: #13860f;
+}
+
+#id_productDescription {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 100px;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.2em;
+    line-height: 1.6em;
+    resize: vertical;
+}
