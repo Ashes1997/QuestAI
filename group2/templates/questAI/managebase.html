@@ -3,34 +3,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     {% block title %}
         <title>manage</title>
     {% endblock %}
     
     <link rel="stylesheet" type="text/css" href="{% static 'css/managebase.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-
+    {% block css %}
+        {# add css link here #}
+    {% endblock %}
 </head>
 
+{# Build a side border for jumping to the page #}
 <body>
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-4 col-lg-2 bg-dark" id="sidebar-wrapper">
-                
-            <a href="{% url 'questAI:manage_home' %}" class="list-group-item list-group-item-action bg-dark text-white">Home</a>
-            <a href="{% url 'questAI:add' %}" class="list-group-item list-group-item-action bg-dark text-white">Add</a>
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Delete</a>
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Change</a>
-            <a href="{% url 'questAI:logout' %}" class="list-group-item list-group-item-action bg-dark text-white">log out</a>
-          </nav>
+                <div class="Man-title"><strong>QuestAI Management</strong></div>
+                {# Add a search box to query specified products #}
+                <form class="sidebar-search d-flex" action="{% url 'questAI:search_product' %}" method="GET">
+                    <input type="text" class="form-control" name="query" placeholder="Search Here">
+                    <button type="submit" class="btn btn-outline-secondary" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            <a href="{% url 'questAI:manage_home' %}" class="list-group-item list-group-item-action bg-dark text-white ">Product Home</a>
+            <a href="{% url 'questAI:add_product' %}" class="list-group-item list-group-item-action bg-dark text-white ">Add a product</a>
+            <a href="{% url 'questAI:logout' %}" class="list-group-item list-group-item-action bg-dark text-white">Log out</a>
+            </nav>
             <main class="col-md-8 col-lg-10" id="content-wrapper">
                 {% block body_block %}
-
+                    {# add body code here #}
                 {% endblock %}
             </main>
         </div>

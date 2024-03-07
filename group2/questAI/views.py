@@ -1,14 +1,13 @@
+import os
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.http import require_POST
-
 from questAI.forms import UserForm, UserProfileForm, UserEditForm, ProductForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-
 from questAI.models import UserProfile, Products, Baskets
 from django.contrib import messages
 
@@ -35,8 +34,6 @@ def register(request):
             user.save()
             profile = profile_form.save(commit=False)#Save the database without submitting it, used to associate users with additional information
             profile.user = user#Establish an association between user and profile
-            # if 'picture' in request.FILES:
-            #     profile.picture = request.FILES['picture']
             profile.save()
             registered = True
             return redirect(reverse('questAI:login'))
@@ -72,16 +69,21 @@ def user_login(request):
             return render(request,'questAI/login.html',context)
     else:
         return render(request,'questAI/login.html')
+
+
 @login_required#Restrict access permissions. This view function can only be accessed when the user is logged in. If a user who is not logged in tries to access this view, the user will be automatically redirected to the login page.
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
+
+
 @login_required
-def user_logout(request):
+def user_logout(request):#Safe user logout
     logout(request)
     return redirect(reverse('questAI:login'))
 
+
 @login_required
-def profile(request):
+def profile(request):#get the specific user and show the profile
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
     return render(request,'questAI/profile.html',{'user':request.user,'profile':user_profile})
@@ -89,20 +91,21 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
-    if request.method == 'POST':
+    if request.method == 'POST':#Obtain user submission request and determine whether the content is valid
         user_form = UserEditForm(request.POST,instance=request.user)
         profile_form = UserProfileForm(request.POST,instance=request.user.userprofile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             return redirect(reverse('questAI:profile'))
-    else:
+    else:#Display of information before request
         user_form = UserEditForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
     return render(request, 'questAI/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
 
 @login_required
 def change_password(request):
@@ -117,14 +120,14 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'questAI/change_password.html', {
-        'form': form
-    })
-def manage_home(request):
+    return render(request, 'questAI/change_password.html', {'form': form})
+
+
+def manage_home(request):#show the product information
     products = Products.objects.all()
     return render(request, 'questAI/manage_home.html', {'products': products})
 
-def edit_product(request, product_id):
+def edit_product(request, product_id):#Obtain product information based on product ID and modify it
     product = get_object_or_404(Products, pk=product_id)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -137,16 +140,39 @@ def edit_product(request, product_id):
 
 @require_POST
 @login_required
-def delete_product(request, product_id):
+def delete_product(request, product_id):#Delete items from database
     if request.method == 'POST':
         product = get_object_or_404(Products, pk=product_id)
+        if product.image:#Remove images from media files
+            image_path = product.image.path
+            if os.path.isfile(image_path):
+                os.remove(image_path)
         product.delete()
         return HttpResponseRedirect(reverse('questAI:manage_home'))
     else:
         return HttpResponseRedirect(reverse('questAI:manage_home'))
 
-def add(request):
-    return render(request, 'questAI/add.html')
+
+def add_product(request):#Complete the new product details in the form and save them to the database
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('questAI:manage_home'))
+    else:
+        form = ProductForm()
+    return render(request, 'questAI/add_product.html',{'form':form})
+
+
+def search_product(request):#Use filters to filter queries and display corresponding products
+    query = request.GET.get('query', '')
+    if query:
+        products = Products.objects.filter(productName__icontains=query)
+    else:
+        products = Products.objects.all()
+    return render(request, 'questAI/search_product.html', {'products': products, 'query': query})
+
+
 
 
 @login_required

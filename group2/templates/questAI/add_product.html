@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends 'questAI/managebase.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Add</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/addproduct.css' %}">
+{% endblock %}
+
+{% block body_block %}
+    {# add product into database #}
+    <form id="add_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <button type="submit" name="add-product" class="btn btn-primary">Save to add</button>
+    </form>
+{% endblock %}

@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
+
 <body>
     <h1>questAI</h1>
     {% if error_message %}
@@ -26,6 +27,7 @@
         <a href="{% url 'questAI:register' %}">If you don't have an account,click here to register</a><br />
     </form>
 </body>
+
     <script>
         function togglePasswordVisibility() {
             var passwordInput = document.getElementById('password');{# Get the password input box element with id password and store it in the variable passwordInput #}

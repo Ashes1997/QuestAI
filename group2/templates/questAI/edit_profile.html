@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 {% extends 'questAI/base.html' %}
 {% load static %}
+
 {% block title %}Edit Profile{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
+
 {% block body_block %}
     <form method="post" action="{% url 'questAI:edit_profile' %}">
     {% csrf_token %}
+    {# Display prompts that do not meet requirements #}
     <div class="profile-container">
         {{ user_form.non_field_errors }}
         {{ profile_form.non_field_errors }}
+        
         <ul class="list-group">
             <li class="list-group-item">
                 <strong>Username: </strong>{{ user_form.username }}
@@ -36,6 +41,7 @@
             </li>
         </ul>
     </div>
+    {# save data into database #}
     <div class="modify-link-container">
         <button type="submit" class="modify-link">Save</button>
     </div>
