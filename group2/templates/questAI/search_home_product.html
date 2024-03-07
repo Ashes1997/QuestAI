@@ -2,10 +2,9 @@
 
 {% extends 'questAI/base.html' %}
 {% load static %}
-{% block title %}Home{% endblock %}
+{% block title %}Search Result{% endblock %}
 {% block css %}
     <style>
-
         .product {
             display: flex;
             margin: 0 2%; 
@@ -64,7 +63,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             -webkit-line-clamp: 1;
-            max-width:1300px;
         }
         
         .productname {
@@ -95,6 +93,8 @@
         </div>
         <button class="add-to-cart" onclick="addToBasket({{ product.productId }});">Add to Cart</button>
     </div>
+    {% empty %}
+            <p>No products found for "{{ query }}".</p>
     {% endfor %}
 </body>
 

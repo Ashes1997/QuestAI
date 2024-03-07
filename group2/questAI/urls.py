@@ -27,7 +27,6 @@ urlpatterns = [
     path('update_basket/', views.update_basket, name='update_basket'),
     path('search-product/',views.search_product,name='search_product'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
-    
-
+    path('search-home-product/',views.search_home_product,name='search_home_product'),
 ]
 

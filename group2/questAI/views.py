@@ -172,7 +172,13 @@ def search_product(request):#Use filters to filter queries and display correspon
         products = Products.objects.all()
     return render(request, 'questAI/search_product.html', {'products': products, 'query': query})
 
-
+def search_home_product(request):
+    query = request.GET.get('query', '')
+    if query:
+        products = Products.objects.filter(productName__icontains=query)
+    else:
+        products = Products.objects.all()
+    return render(request, 'questAI/search_home_product.html', {'products': products, 'query': query})
 
 
 @login_required
