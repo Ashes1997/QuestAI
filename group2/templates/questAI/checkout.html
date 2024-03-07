@@ -1,0 +1,18 @@
+{% extends 'questAI/base.html' %}
+{% block title %}Your quest{% endblock %}
+{% block css %}
+
+
+{%endblock%}
+{%block body_block%}
+{% if quest %}
+    <div class="quest-box">
+        <h2>Your Quest</h2>
+        <p>{{ quest }}</p>
+    </div>
+{% endif %}
+
+{%endblock%}
+{% block js %}
+
+{% endblock %}

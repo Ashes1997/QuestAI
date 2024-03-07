@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from questAI.models import UserProfile, Products, Baskets, Comments
 from django.contrib import messages
+from chatGPT import quest_create 
 
 
 def index(request):
@@ -266,3 +267,21 @@ def update_basket(request):
     basket_item.save()
 
     return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
+
+@login_required
+def checkout(request):
+    # Retrieve the user's basket items
+    basket_items = Baskets.objects.filter(username=request.user)
+    
+
+    products_string = ', '.join([f"{item.productId.productName}" for item in basket_items])
+    
+    # Call the OpenAI API function
+    if products_string:  # Ensure there are products in the basket
+        quest = quest_create(products_string)
+    else:
+        quest = "Your basket is empty. Add some products to generate a quest."
+    
+    # Pass the resulting quest to the template
+    context = {'quest': quest, 'basket_items': basket_items}
+    return render(request, 'questAI/checkout.html', context)

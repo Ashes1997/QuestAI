@@ -23,7 +23,7 @@ def quest_create(prompt: str):
     
     return prompt_return
 
-print(quest_create("Sword of flames, Potion of giants."))
+
 
 
 
