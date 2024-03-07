@@ -14,6 +14,29 @@
         margin-left: 20px;
         margin-right: 20px;
     }
+    .total-price-box {
+        width : 50%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 20px;
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .quest-button {
+        background-color: #00c648;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
 </style>
     {%endblock%}
 {%block body_block%}
@@ -37,7 +60,10 @@
             <td>{{ item.productId.productName }}</td>
             <td>{{ item.productId.productDescription }}</td>
             <td>£{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
+            <td>{{ item.quantity }}
+                <button type="button" onclick="updateBasket('{{ item.basketId }}', 'decrease');">-</button>
+                <button type="button" onclick="updateBasket('{{ item.basketId }}', 'increase');">+</button>
+            </td>
             <td>£{{ item.total_price }}</td>
         </tr>
         {% empty %}
@@ -47,9 +73,44 @@
         {% endfor %}
     </tbody>
 </table>
-<div>
+<br />
+<div class="total-price-box">
     <strong>Total Price: £{{ total_price }}</strong>
+    <a href="{% url 'questAI:checkout' %}" class="quest-button">Buy your quest!</a>
 </div>
 </body>
 </div>
 {%endblock%}
+{% block js %}
+<script>
+    function updateBasket(itemId, action) {
+        $.ajax({
+            url: '/questAI/update_basket/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'item_id': itemId,
+                'action': action
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status === 'success') {
+                    location.reload();
+                } else {
+                    alert("Something went wrong: " + data.message);
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                alert("Ajax error: " + xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
+$(document).ready(function() {
+    $('.quantity-update').click(function() {
+        var basketId = $(this).data('id');
+        var action = $(this).data('action');
+        updateItemQuantity(basketId, action);
+    });
+});
+</script>
+{% endblock %}

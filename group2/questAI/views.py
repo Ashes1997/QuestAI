@@ -176,15 +176,38 @@ def add_to_basket(request, product_id):
     if request.method == "POST":
         product = get_object_or_404(Products, pk=product_id)
         user = request.user
-        # Check if the product is already in the basket
         basket_item, created = Baskets.objects.get_or_create(
             username=user, productId=product,
             defaults={'price': product.price, 'quantity': 1})
         if not created:
-            # If the item is already in the basket, increase the quantity
             basket_item.quantity += 1
             basket_item.save()
         return JsonResponse({'status': 'success', 'message': 'Product added to basket'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+    
+
+@login_required
+@require_POST
+def update_basket(request):
+    item_id = request.POST.get('item_id')
+    action = request.POST.get('action')
+    user = request.user
+    
+    basket_item = get_object_or_404(Baskets, basketId=item_id, username=user)
+    
+    if action == "increase":
+        basket_item.quantity += 1
+    elif action == "decrease":
+        # Check if the quantity is greater than 1 before decrementing
+        if basket_item.quantity > 1:
+            basket_item.quantity -= 1
+        else:
+            # If quantity will be less than 1, remove the item from the basket
+            basket_item.delete()
+            return JsonResponse({'status': 'success', 'message': 'Item removed from basket'})
+
+    basket_item.save()
+
+    return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
 
