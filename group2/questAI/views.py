@@ -284,4 +284,5 @@ def checkout(request):
     
     # Pass the resulting quest to the template
     context = {'quest': quest, 'basket_items': basket_items}
+    basket_items.delete()
     return render(request, 'questAI/checkout.html', context)

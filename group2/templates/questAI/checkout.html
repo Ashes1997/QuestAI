@@ -1,15 +1,27 @@
 {% extends 'questAI/base.html' %}
 {% block title %}Your quest{% endblock %}
 {% block css %}
+<style>
+    .quest-box {
+        width: 70%;
+        margin-left: 10px; 
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center; 
+    }
 
+</style>
 
 {%endblock%}
 {%block body_block%}
+<br />
 {% if quest %}
+<div class = "inner-body">
     <div class="quest-box">
         <h2>Your Quest</h2>
         <p>{{ quest }}</p>
     </div>
+</div>
 {% endif %}
 
 {%endblock%}
