@@ -25,6 +25,25 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .checkout-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the start */
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .total-price-box {
+        width: 50%; /* Adjust this to match the original width or to your preference */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
     .quest-button {
         background-color: #00c648;
         color: white;
@@ -37,52 +56,73 @@
         display: inline-block;
         font-size: 16px;
     }
+
+    .spinner-border {
+        display: none; 
+        margin-left: 10px; 
+    }
 </style>
     {%endblock%}
 {%block body_block%}
-<div class = container1>
-<h1>Your Basket</h1>
-<table class= basket-table>
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Product Details</th>
-            <th>Individual Price</th>
-            <th>Quantity Required</th>
-            <th>Total Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in basket_items %}
-        <tr>
-            <td><img src="{{ item.productId.image.url }}" alt="{{ item.productId.productName }}" class = "basket-image"></td>
-            <td>{{ item.productId.productName }}</td>
-            <td>{{ item.productId.productDescription }}</td>
-            <td>£{{ item.price }}</td>
-            <td>{{ item.quantity }}
-                <button type="button" onclick="updateBasket('{{ item.basketId }}', 'decrease');">-</button>
-                <button type="button" onclick="updateBasket('{{ item.basketId }}', 'increase');">+</button>
-            </td>
-            <td>£{{ item.total_price }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Your basket is empty.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<br />
-<div class="total-price-box">
-    <strong>Total Price: £{{ total_price }}</strong>
-    <a href="{% url 'questAI:checkout' %}" class="quest-button">Buy your quest!</a>
-</div>
-</body>
+<div class="container1">
+    <h1>Your Basket</h1>
+    {% if basket_items %}
+    <table class="basket-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Product Details</th>
+                <th>Individual Price</th>
+                <th>Quantity Required</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in basket_items %}
+            <tr>
+                <td><img src="{{ item.productId.image.url }}" alt="{{ item.productId.productName }}" class="basket-image"></td>
+                <td>{{ item.productId.productName }}</td>
+                <td>{{ item.productId.productDescription }}</td>
+                <td>£{{ item.price }}</td>
+                <td>{{ item.quantity }}
+                    <button type="button" onclick="updateBasket('{{ item.basketId }}', 'decrease');">-</button>
+                    <button type="button" onclick="updateBasket('{{ item.basketId }}', 'increase');">+</button>
+                </td>
+                <td>£{{ item.total_price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Your basket is empty.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    <div class="checkout-container">
+        <div class="total-price-box">
+            <strong>Total Price: £{{ total_price }}</strong>
+            <a href="#" onclick="redirectToCheckout();" class="quest-button">Buy your quest!</a>
+        </div>
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    {% else %}
+    <p>Your basket is empty.</p>
+    {% endif %}
 </div>
 {%endblock%}
 {% block js %}
 <script>
+    function redirectToCheckout() {
+        // Show the spinner
+        document.querySelector('.spinner-border').style.display = 'inline-block';
+    
+        // Redirect to the checkout page
+        window.location.href = "{% url 'questAI:checkout' %}";
+    }
+    
     function updateBasket(itemId, action) {
         $.ajax({
             url: '/questAI/update_basket/',
@@ -112,5 +152,6 @@ $(document).ready(function() {
         updateItemQuantity(basketId, action);
     });
 });
+
 </script>
 {% endblock %}

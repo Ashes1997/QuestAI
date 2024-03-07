@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from questAI.models import UserProfile, Products, Baskets, Comments
 from django.contrib import messages
+from chatGPT import quest_create, chatbot
 
 
 def index(request):
@@ -272,3 +273,38 @@ def update_basket(request):
     basket_item.save()
 
     return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
+
+@login_required
+def checkout(request):
+    
+    basket_items = Baskets.objects.filter(username=request.user)
+    
+
+    products_string = ', '.join([f"{item.productId.productName}" for item in basket_items])
+    
+    
+    if products_string:  
+        quest = quest_create(products_string)
+    else:
+        quest = "Your basket is empty. Add some products to generate a quest."
+    
+    
+    context = {'quest': quest, 'basket_items': basket_items}
+    basket_items.delete()
+    request.session.pop("past_messages", None)
+    return render(request, 'questAI/checkout.html', context)
+
+def questbot_ask(request):
+    if request.method == "POST":
+        user_message = request.POST.get("message")
+        quest = request.POST.get("quest", "")  
+        past_messages = request.session.get("past_messages", [])
+        
+        reply, updated_past_messages = chatbot(quest, user_message, past_messages)
+        
+        
+        request.session["past_messages"] = updated_past_messages
+        
+        return JsonResponse({"reply": reply})
+
+    return JsonResponse({"error": "This endpoint only supports POST requests."}, status=405)

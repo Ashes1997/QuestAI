@@ -1,0 +1,85 @@
+{% extends 'questAI/base.html' %}
+{% block title %}Your quest{% endblock %}
+{% block css %}
+<style>
+    .inner-body{
+        justify-content: center;
+        display: flex;
+        width: 100%;
+    }
+    .quest-box {
+        width: 70%; 
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center; 
+    }
+    .chatbot-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .chatbot-messages {
+        height: 200px;
+        overflow-y: auto;
+        background-color: #f4f4f4;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+</style>
+
+{%endblock%}
+{%block body_block%}
+<br />
+{% if quest %}
+<div class = "inner-body">
+    <div class="quest-box">
+        <h2>Your Quest</h2>
+        <p id = "quest_text">{{ quest }}</p>
+    </div>
+</div>
+{% endif %}
+<div class="chatbot-container">
+    <div id="chatbot-messages" class="chatbot-messages"></div>
+    <input type="text" id="chatbot-input" placeholder="Ask about your quest...">
+    <button onclick="sendChatbotMessage()">Send</button>
+</div>
+
+{%endblock%}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        function sendChatbotMessage() {
+            const message = $('#chatbot-input').val();
+            $('#chatbot-input').val(''); // Clear input field
+            const quest = $('#quest_text').text();
+            
+            $.ajax({
+                url: '/questAI/questbot_ask/', 
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'message': message,
+                    'quest': quest  
+                },
+                dataType: 'json',
+                success: function(data) {
+                    const messagesContainer = $('#chatbot-messages');
+                    messagesContainer.append(`<div>You: ${message}</div><br/>`);
+                    messagesContainer.append(`<div>Wizard: ${data.reply}</div><br/>`);
+                    messagesContainer.scrollTop(messagesContainer.prop("scrollHeight"));
+                },
+                error: function(xhr, errmsg, err) {
+                    alert("Ajax error: " + xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }
+
+        $('button').click(function(e) {
+            e.preventDefault(); 
+            sendChatbotMessage();
+        });
+    });
+</script>
+
+{% endblock %}
