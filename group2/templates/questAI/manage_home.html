@@ -4,21 +4,23 @@
 {% block title %}
     <title>manage home</title>
 {% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/managehome.css' %}">
 {% endblock %}
+
 {% block body_block %}
     <div class="container">
         <div class="row">
             {% for product in products %}
             <div class="col-md-4 mb-3"> 
-                <div class="card" style="width: 18rem;">
+                <div class="card" style="width: 18rem;">{# Use the card component to display all existing products #}
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.productName }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.productName }}</h5>
                         <p class="card-text">{{ product.productDescription }}</p>
                         <p class="card-text">£{{ product.price }}</p>
-                        <div class="btn-container">
+                        <div class="btn-container">{# Add edit and delete buttons #}
                             <a href="{% url 'questAI:edit_product' product.productId%}" class="btn btn-primary btn-edit">Edit</a>
                             <form action="{% url 'questAI:delete_product' product.productId %}" method="post" class="d-inline">
                                 {% csrf_token %}
@@ -31,5 +33,4 @@
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}

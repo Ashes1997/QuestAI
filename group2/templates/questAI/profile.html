@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 {% extends 'questAI/base.html' %}
 {% load static %}
+
 {% block title %}Profile{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
+
 {% block body_block %}
     <div class="profile-container">
-        <form>
+        <form>{# Display the current user's personal information, Read-only mode does not allow user modification #}
             <ul class="list-group">
                 <li class="list-group-item">
                     <strong>Username: </strong>
@@ -34,14 +37,15 @@
                     <input type="text" value="{{ profile.postcode }}" readonly>
                 </li>
             </ul>
+            {# a link to change password #}
             <div>
                 <a href="{% url 'questAI:change_password' %}" class="change-password">Change your password</a>
             </div>
         </form>
     </div>
+    {# a link to change user's profile #}
     <div class="modify-link-container">
         <a href="{% url 'questAI:edit_profile' %}" class="modify-link">Edit Profile</a>
     </div>
-    
 {% endblock %}
 

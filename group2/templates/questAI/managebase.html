@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     {% block title %}
         <title>manage</title>
     {% endblock %}
@@ -16,15 +17,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     {% block css %}
-        
+        {# add css link here #}
     {% endblock %}
 </head>
 
+{# Build a side border for jumping to the page #}
 <body>
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-4 col-lg-2 bg-dark" id="sidebar-wrapper">
                 <div class="Man-title"><strong>QuestAI Management</strong></div>
+                {# Add a search box to query specified products #}
                 <form class="sidebar-search d-flex" action="{% url 'questAI:search_product' %}" method="GET">
                     <input type="text" class="form-control" name="query" placeholder="Search Here">
                     <button type="submit" class="btn btn-outline-secondary" aria-label="Search">
@@ -37,7 +40,7 @@
             </nav>
             <main class="col-md-8 col-lg-10" id="content-wrapper">
                 {% block body_block %}
-
+                    {# add body code here #}
                 {% endblock %}
             </main>
         </div>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 {% extends 'questAI/managebase.html' %}
 {% load static %}
+
 {% block title %}
     <title>edit product</title>
 {% endblock %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/editproduct.css' %}">
 {% endblock %}
 
 {% block body_block %}
+    {# update the product details #}
     <form id="edit_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

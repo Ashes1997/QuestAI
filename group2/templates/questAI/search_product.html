@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends 'questAI/managebase.html' %}
 {% load static %}
+
 {% block title %}
     <title>Search Product</title>
 {% endblock %}
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block body_block %}
-    
+    {# show the result of query, and keep the template for displaying products #}
     <div class="container">
         <div class="row">
             {% for product in products %}
@@ -31,6 +32,7 @@
                     </div>
                 </div>
             </div>
+            {# When the specified product is not found #}
             {% empty %}
                 <p>No products found for "{{ query }}".</p>
             {% endfor %}
