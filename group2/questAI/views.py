@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from questAI.models import UserProfile, Products, Baskets
+from questAI.models import UserProfile, Products, Baskets, Comments
 from django.contrib import messages
 
 
@@ -211,7 +211,7 @@ def add_to_basket(request, product_id):
         return JsonResponse({'status': 'success', 'message': 'Product added to basket'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
-    
+
 
 @login_required
 @require_POST
@@ -237,3 +237,32 @@ def update_basket(request):
 
     return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
 
+def product_detail(request, product_id):
+    product = Products.objects.get(productId=product_id)
+    comments = Comments.objects.filter(productId=product)
+    context = {'product': product, 'comments': comments}
+    return render(request, 'questAI/product_detail.html', context)
+
+@login_required
+@require_POST
+def update_basket(request):
+    item_id = request.POST.get('item_id')
+    action = request.POST.get('action')
+    user = request.user
+    
+    basket_item = get_object_or_404(Baskets, basketId=item_id, username=user)
+    
+    if action == "increase":
+        basket_item.quantity += 1
+    elif action == "decrease":
+        # Check if the quantity is greater than 1 before decrementing
+        if basket_item.quantity > 1:
+            basket_item.quantity -= 1
+        else:
+            # If quantity will be less than 1, remove the item from the basket
+            basket_item.delete()
+            return JsonResponse({'status': 'success', 'message': 'Item removed from basket'})
+
+    basket_item.save()
+
+    return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
