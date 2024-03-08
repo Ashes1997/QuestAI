@@ -23,16 +23,20 @@ def __str__(self):
 
 
 class Reviews(models.Model):
+    LIKE_CHOICES = (
+        ('like', 'Like'),  # First element is the actual value, second is the human-readable name
+        ('dislike', 'Dislike'),
+    )
     username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     productId = models.ForeignKey(Products, on_delete=models.CASCADE, verbose_name="Product")
-    like = models.BooleanField(verbose_name="Like/Dislike",default=True)  # True for like, False for dislike
+    review_type = models.CharField(max_length=7, choices=LIKE_CHOICES, default='like', verbose_name="Like/Dislike")
 
     class Meta:
         unique_together = ('username', 'productId')
         verbose_name_plural = "Reviews"
+    
 
-    def __str__(self):
-        return f"{self.username.username} - {self.productId.productName} - {'Like' if self.like else 'Dislike'}"
+
 
 class Comments (models.Model):
     commentId = models.IntegerField(unique=True)

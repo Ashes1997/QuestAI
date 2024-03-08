@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from questAI.models import UserProfile, Products, Baskets, Comments, Purchase, Reviews
 from django.contrib import messages
 from chatGPT import quest_create, chatbot
+from django.db.models import Count, Q
 
 
 def index(request):
@@ -19,7 +20,10 @@ def index(request):
 
 @login_required
 def home(request):
-    products = Products.objects.all()
+    products = Products.objects.annotate(
+        likes_count=Count('reviews', filter=Q(reviews__review_type='like')),
+        dislikes_count=Count('reviews', filter=Q(reviews__review_type='dislike')),
+    ).all()
     return render(request, 'questAI/home.html', {'products': products})
 
 
@@ -329,15 +333,29 @@ def like_dislike(request, product_id):
     if not Purchase.objects.filter(user=user, product=product).exists():
         return JsonResponse({'status': 'error', 'message': 'You must purchase the product before reviewing it.'}, status=403)
     
-    like = request.POST.get('like') == 'true'  # Convert string to boolean
+
+    review_type = 'like' if request.POST.get('like') == 'true' else 'dislike'
     
-    # Check if the review already exists
-    review, created = Reviews.objects.get_or_create(username=user, productId=product, defaults={'like': like})
+    # Get or create review, updating if already exists
+    review, created = Reviews.objects.get_or_create(
+        username=user, 
+        productId=product, 
+        defaults={'review_type': review_type}
+    )
     
     if not created:
-        # If the review already exists, update the like/dislike value
-        review.like = like
+
+        review.review_type = review_type
         review.save()
     
-    action = "Liked" if like else "Disliked"
-    return JsonResponse({'status': 'success', 'message': f'Product successfully {action}.'})
+
+    likes_count = Reviews.objects.filter(productId=product, review_type='like').count()
+    dislikes_count = Reviews.objects.filter(productId=product, review_type='dislike').count()
+    
+    action = "Liked" if review_type == 'like' else "Disliked"
+    return JsonResponse({
+        'status': 'success', 
+        'message': f'Product successfully {action}.',
+        'likes': likes_count,  
+        'dislikes': dislikes_count  
+    })
