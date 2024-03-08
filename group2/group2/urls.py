@@ -23,6 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('questAI/', include('questAI.urls')),
-    path('',views.index, name = 'index'),
+    path('',views.home, name = 'index'),
    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

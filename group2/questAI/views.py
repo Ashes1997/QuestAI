@@ -15,7 +15,7 @@ from django.contrib import messages
 def index(request):
     return render(request, 'questAI/index.html')
 
-@login_required
+# @login_required
 def home(request):
     products = Products.objects.all()
     return render(request, 'questAI/home.html', {'products': products})
@@ -122,11 +122,11 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'questAI/change_password.html', {'form': form})
 
-
+@login_required
 def manage_home(request):#show the product information
     products = Products.objects.all()
     return render(request, 'questAI/manage_home.html', {'products': products})
-
+@login_required
 def edit_product(request, product_id):#Obtain product information based on product ID and modify it
     product = get_object_or_404(Products, pk=product_id)
     if request.method == 'POST':
@@ -152,7 +152,7 @@ def delete_product(request, product_id):#Delete items from database
     else:
         return HttpResponseRedirect(reverse('questAI:manage_home'))
 
-
+@login_required
 def add_product(request):#Complete the new product details in the form and save them to the database
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -163,7 +163,7 @@ def add_product(request):#Complete the new product details in the form and save 
         form = ProductForm()
     return render(request, 'questAI/add_product.html',{'form':form})
 
-
+@login_required
 def search_product(request):#Use filters to filter queries and display corresponding products
     query = request.GET.get('query', '')
     if query:
@@ -203,6 +203,7 @@ def topup(request):
 def checkout(request):
     return HttpResponse("Test for Checkout Page")
 
+@login_required
 def add_to_basket(request, product_id):
     print("Adding to basket...")
     if request.method == "POST":
