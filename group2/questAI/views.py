@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from questAI.models import UserProfile, Products, Baskets, Comments, Purchase
+from questAI.models import UserProfile, Products, Baskets, Comments, Purchase, Reviews
 from django.contrib import messages
 from chatGPT import quest_create, chatbot
 
@@ -318,3 +318,26 @@ def questbot_ask(request):
         return JsonResponse({"reply": reply})
 
     return JsonResponse({"error": "This endpoint only supports POST requests."}, status=405)
+
+@login_required
+@require_POST
+def like_dislike(request, product_id):
+    user = request.user
+    product = get_object_or_404(Products, pk=product_id)
+    
+    # Check if the user has purchased the product
+    if not Purchase.objects.filter(user=user, product=product).exists():
+        return JsonResponse({'status': 'error', 'message': 'You must purchase the product before reviewing it.'}, status=403)
+    
+    like = request.POST.get('like') == 'true'  # Convert string to boolean
+    
+    # Check if the review already exists
+    review, created = Reviews.objects.get_or_create(username=user, productId=product, defaults={'like': like})
+    
+    if not created:
+        # If the review already exists, update the like/dislike value
+        review.like = like
+        review.save()
+    
+    action = "Liked" if like else "Disliked"
+    return JsonResponse({'status': 'success', 'message': f'Product successfully {action}.'})
