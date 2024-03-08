@@ -22,14 +22,17 @@ def __str__(self):
     return str(self.basketId) + " " + str(self.productId.id) + " " + str(self.username)
 
 
-class Reviews (models.Model):
-    reviewId= models.ImageField(unique=True)
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    productId =models.ForeignKey(Products, on_delete=models.CASCADE)
-    rating= models.IntegerField(default=1)
-    
+class Reviews(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
+    productId = models.ForeignKey(Products, on_delete=models.CASCADE, verbose_name="Product")
+    like = models.BooleanField(verbose_name="Like/Dislike",default=True)  # True for like, False for dislike
+
+    class Meta:
+        unique_together = ('username', 'productId')
+        verbose_name_plural = "Reviews"
+
     def __str__(self):
-        return self.reviewId
+        return f"{self.username.username} - {self.productId.productName} - {'Like' if self.like else 'Dislike'}"
 
 class Comments (models.Model):
     commentId = models.IntegerField(unique=True)

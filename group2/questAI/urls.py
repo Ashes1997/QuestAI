@@ -29,5 +29,6 @@ urlpatterns = [
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
     path('questbot_ask/', views.questbot_ask, name='questbot_ask'),
     path('search-home-product/',views.search_home_product,name='search_home_product'),
+    path('like_dislike/<int:product_id>/', views.like_dislike, name='like_dislike'),
 ]
 
