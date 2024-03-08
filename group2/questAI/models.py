@@ -50,3 +50,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+class Purchase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User who purchased")
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, verbose_name="Purchased product")
+    quantity = models.IntegerField(default=1, verbose_name="Quantity purchased")
+    purchase_date = models.DateTimeField(auto_now_add=True, verbose_name="Purchase date")
+
+    class Meta:
+        unique_together = ('user', 'product','purchase_date')
+        verbose_name_plural = "Purchases"
+
+    def __str__(self):
+        return f"Purchase of {self.product.productName} by {self.user.username} on {self.purchase_date.strftime('%Y-%m-%d %H:%M:%S')}"

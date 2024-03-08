@@ -1,5 +1,6 @@
 import os
 from django.contrib.auth.forms import PasswordChangeForm
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.http import require_POST
@@ -8,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from questAI.models import UserProfile, Products, Baskets, Comments
+from questAI.models import UserProfile, Products, Baskets, Comments, Purchase
 from django.contrib import messages
 from chatGPT import quest_create, chatbot
 
@@ -276,23 +277,32 @@ def update_basket(request):
 
 @login_required
 def checkout(request):
-    
     basket_items = Baskets.objects.filter(username=request.user)
-    
-
     products_string = ', '.join([f"{item.productId.productName}" for item in basket_items])
     
-    
-    if products_string:  
-        quest = quest_create(products_string)
+    if basket_items.exists():
+        for item in basket_items:
+
+            Purchase.objects.create(
+                user=request.user,
+                product=item.productId,
+                quantity=item.quantity,
+                purchase_date=timezone.now() 
+            )
+            
+        
+        if products_string:  
+            quest = quest_create(products_string)
+        else:
+            quest = "Your basket is empty. Add some products to generate a quest."
+
+        context = {'quest': quest, 'basket_items': basket_items}
+        basket_items.delete()  
+        request.session.pop("past_messages", None)
+        return render(request, 'questAI/checkout.html', context)
     else:
-        quest = "Your basket is empty. Add some products to generate a quest."
-    
-    
-    context = {'quest': quest, 'basket_items': basket_items}
-    basket_items.delete()
-    request.session.pop("past_messages", None)
-    return render(request, 'questAI/checkout.html', context)
+        context = {'message': "Your basket is empty. Add some products to generate a quest."}
+        return render(request, 'questAI/checkout.html', context)
 
 def questbot_ask(request):
     if request.method == "POST":
