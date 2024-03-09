@@ -7,7 +7,7 @@ from questAI import views
 app_name = 'questAI'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.home, name='index'),
     path('home/', views.home, name='home'),
     path('basket/', views.basket, name='basket'),
     path('topup/', views.topup, name='topup'),
