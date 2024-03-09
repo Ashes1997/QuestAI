@@ -1,35 +1,8 @@
 {% extends 'questAI/base.html' %}
+{% load static %}
 {% block title %}Your quest{% endblock %}
 {% block css %}
-<style>
-    .inner-body{
-        justify-content: center;
-        display: flex;
-        width: 100%;
-    }
-    .quest-box {
-        width: 70%; 
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center; 
-    }
-    .chatbot-container {
-        margin-right: 15%;
-        margin-left: 15%;
-        margin-top: 20px;
-        width: 70%;
-        text-align: center;
-    }
-    .chatbot-messages {
-        height: 200px;
-        overflow-y: auto;
-        background-color: #f4f4f4;
-        margin-bottom: 10px;
-        padding: 10px;
-    }
-
-</style>
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
 {%endblock%}
 {%block body_block%}
 <br />

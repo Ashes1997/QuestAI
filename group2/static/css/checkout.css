@@ -1,0 +1,25 @@
+.inner-body{
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+.quest-box {
+    width: 70%; 
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+}
+.chatbot-container {
+    margin-right: 15%;
+    margin-left: 15%;
+    margin-top: 20px;
+    width: 70%;
+    text-align: center;
+}
+.chatbot-messages {
+    height: 200px;
+    overflow-y: auto;
+    background-color: #f4f4f480;
+    margin-bottom: 10px;
+    padding: 10px;
+}

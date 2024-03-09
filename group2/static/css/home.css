@@ -1,0 +1,108 @@
+.product {
+    display: flex;
+    margin: 0 2%; 
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.product-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 20px;
+}
+.product-image {
+    margin-left: 20px;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+.product-image img {
+    width: 100px; 
+    height: auto;
+}
+.add-to-cart img {
+width: 100px; 
+height: auto;
+}
+
+.add-to-cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #ff6347;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.add-to-cart:hover {
+    background-color: #ff4d24;
+}
+  
+.add-to-cart-text {
+    margin-right: 8px;
+}
+
+.product-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    max-width:1300px;
+}
+
+.productname {
+    color: black;
+    text-decoration: none;
+    font-style: italic;
+}
+.productname:hover {
+    color: #4000ff;
+}
+.dislike-button {
+    margin-left: 30px; 
+}
+.like-button{
+    background: #79ff9d ;
+    border: none;
+    border-radius: 20px; 
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s ease; 
+}
+.dislike-button {
+    background: #ff8383 ;
+    border: none;
+    border-radius: 20px; 
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s ease; 
+}
+
+.like-button:hover{
+    box-shadow: 0 4px 10px rgba(5, 255, 1, 0.3); 
+    transform: translateY(-2px); 
+}
+.dislike-button:hover {
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.497); 
+    transform: translateY(-2px); 
+}
+
+.like-button:active,
+.dislike-button:active {
+    transform: translateY(1px); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); 
+}
+
