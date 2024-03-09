@@ -137,3 +137,9 @@ REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL='questAI:index'
 LOGIN_URL = 'questAI:login'
 # LOGIN_URL = 'auth_login'
+
+from dotenv import load_dotenv
+load_dotenv()  # 加载 .env 文件中的变量
+
+# 然后你可以使用环境变量
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

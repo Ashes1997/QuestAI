@@ -85,7 +85,7 @@ def restricted(request):
 @login_required
 def user_logout(request):#Safe user logout
     logout(request)
-    return redirect(reverse('questAI:login'))
+    return redirect(reverse('questAI:home'))
 
 
 @login_required
@@ -324,39 +324,41 @@ def questbot_ask(request):
 
     return JsonResponse({"error": "This endpoint only supports POST requests."}, status=405)
 
-@login_required
 @require_POST
+# @login_required
 def like_dislike(request, product_id):
-    user = request.user
-    product = get_object_or_404(Products, pk=product_id)
-    
-    # Check if the user has purchased the product
-    if not Purchase.objects.filter(user=user, product=product).exists():
-        return JsonResponse({'status': 'error', 'message': 'You must purchase the product before reviewing it.'}, status=403)
-    
+    if request.user.is_authenticated:
+        user = request.user
+        product = get_object_or_404(Products, pk=product_id)
 
-    review_type = 'like' if request.POST.get('like') == 'true' else 'dislike'
-    
-    # Get or create review, updating if already exists
-    review, created = Reviews.objects.get_or_create(
-        username=user, 
-        productId=product, 
-        defaults={'review_type': review_type}
-    )
-    
-    if not created:
+        # Check if the user has purchased the product
+        if not Purchase.objects.filter(user=user, product=product).exists():
+            return JsonResponse({'status': 'error', 'message': 'You must purchase the product before reviewing it.'},
+                                status=403)
 
-        review.review_type = review_type
-        review.save()
-    
+        review_type = 'like' if request.POST.get('like') == 'true' else 'dislike'
 
-    likes_count = Reviews.objects.filter(productId=product, review_type='like').count()
-    dislikes_count = Reviews.objects.filter(productId=product, review_type='dislike').count()
-    
-    action = "Liked" if review_type == 'like' else "Disliked"
-    return JsonResponse({
-        'status': 'success', 
-        'message': f'Product successfully {action}.',
-        'likes': likes_count,  
-        'dislikes': dislikes_count  
-    })
+        # Get or create review, updating if already exists
+        review, created = Reviews.objects.get_or_create(
+            username=user,
+            productId=product,
+            defaults={'review_type': review_type}
+        )
+
+        if not created:
+            review.review_type = review_type
+            review.save()
+
+        likes_count = Reviews.objects.filter(productId=product, review_type='like').count()
+        dislikes_count = Reviews.objects.filter(productId=product, review_type='dislike').count()
+
+        action = "Liked" if review_type == 'like' else "Disliked"
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Product successfully {action}.',
+            'likes': likes_count,
+            'dislikes': dislikes_count
+        })
+    else:
+        return JsonResponse({'status': 'error', 'message': 'You must log in before you can like or dislike a product.'},
+                            status=403)
