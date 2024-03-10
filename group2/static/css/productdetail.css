@@ -1,0 +1,140 @@
+.upper-section {
+    display: flex;
+    padding: 20px;
+    align-items: flex-start;
+    height: calc(66.6vh - 20px);
+}
+
+.lower-section {
+    height: calc(33.3vh - 20px);
+}
+
+.product-image {
+    flex: 1;
+    text-align: center;
+    padding-right: 20px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-details {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align the children center */
+}
+
+.product-name {
+    font-size: 32px; /* Increase font size */
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center; /* Center align the product name */
+}
+
+.description-box {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.product-description {
+    margin-bottom: 10px;
+}
+
+.product-price {
+    margin: 10px 0;
+    text-align: center; /* Center align the price */
+}
+
+.add-to-cart-form {
+    text-align: center; /* Center align the add to cart form */
+    width: 100%;
+    margin-top: auto; /* Push the button to the bottom of the container */
+}
+
+.add-to-cart {
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.comments-title {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.comments-section {
+    overflow-y: auto;
+    max-height: calc(33.3vh - 60px);
+    padding: 10px 20px;
+}
+
+.comment {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px 20px;
+}
+
+.comment-form {
+    display: flex;
+    align-items: center;
+}
+
+.comment-form textarea {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.post-comment-btn {
+    background-color: #98FB98;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .upper-section {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .lower-section {
+        height: auto;
+    }
+
+    .add-to-cart-form {
+        margin-top: 10px;
+    }
+
+    .comments-section {
+        max-height: auto;
+    }
+
+    .comment-form-container {
+        position: relative;
+    }
+
+    .product-name,
+    .product-price {
+        text-align: left; /* Align text to the left on smaller screens */
+    }
+}

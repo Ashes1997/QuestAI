@@ -35,7 +35,7 @@ class Reviews (models.Model):
         return self.reviewId
 
 class Comments (models.Model):
-    commentId = models.IntegerField(unique=True)
+    commentId = models.AutoField(primary_key=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     productId =models.ForeignKey(Products, on_delete=models.CASCADE)
     commenttext = models.CharField(max_length=500)
