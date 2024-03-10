@@ -250,8 +250,20 @@ def update_basket(request):
     return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
 
 def product_detail(request, product_id):
-    product = Products.objects.get(productId=product_id)
+    product = get_object_or_404(Products, productId=product_id)
     comments = Comments.objects.filter(productId=product)
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        # create ad storeage the commment
+        Comments.objects.create(
+            productId=product,
+            username=request.user,
+            commenttext=comment_text
+        )
+        # back to product page
+        return HttpResponseRedirect(reverse('questAI:product_detail', args=[product_id]))
+
     context = {'product': product, 'comments': comments}
     return render(request, 'questAI/product_detail.html', context)
 
