@@ -27,20 +27,5 @@
         <a href="{% url 'questAI:register' %}">If you don't have an account,click here to register</a><br />
     </form>
 </body>
-
-    <script>
-        function togglePasswordVisibility() {
-            var passwordInput = document.getElementById('password');{# Get the password input box element with id password and store it in the variable passwordInput #}
-            var toggleIcon = document.querySelector('.password-toggle');{# Select the element with class name .password-toggle (i.e. the eye icon) and store it in the variable toggleIcon #}
-            if (passwordInput.type === 'password'){{# Password is currently hidden #}
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');{# Replace eye icon #}
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-    </script>
+<script src="{% static 'js/login_password.js' %}"></script>
 </html>
