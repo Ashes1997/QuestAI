@@ -190,24 +190,22 @@ def search_home_product(request):
 @login_required
 def basket(request):
     if not request.user.is_authenticated:
-        return render(request, 'questAI/login.html')
-    basket_items = Baskets.objects.filter(username=request.user)
+        return render(request, 'questAI/login.html') #to prevent users who aren't logged in from accessing the basket
+    basket_items = Baskets.objects.filter(username=request.user) #gets all basket items for this user
     
-    total_price = 0
-    for item in basket_items:
+    total_price = 0 #variable to track grand total
+    for item in basket_items: #iterates through items in basket
         item.total_price = item.price * item.quantity
-        total_price += item.total_price
+        total_price += item.total_price #adds price to grand total
     context = {
         'basket_items': basket_items,
-        'total_price': total_price
+        'total_price': total_price 
     }
     return render(request, 'questAI/basket.html', context)
 
 def topup(request):
     return HttpResponse("Test for Top Up Page")
 
-def checkout(request):
-    return HttpResponse("Test for Checkout Page")
 
 @login_required
 def add_to_basket(request, product_id):
