@@ -209,16 +209,16 @@ def topup(request):
 
 @login_required
 def add_to_basket(request, product_id):
-    print("Adding to basket...")
+    print("Adding to basket...") 
     if request.method == "POST":
         product = get_object_or_404(Products, pk=product_id)
         user = request.user
         basket_item, created = Baskets.objects.get_or_create(
-            username=user, productId=product,
-            defaults={'price': product.price, 'quantity': 1})
+            username=user, productId=product, 
+            defaults={'price': product.price, 'quantity': 1}) #if item didn't exist in basket
         if not created:
-            basket_item.quantity += 1
-            basket_item.save()
+            basket_item.quantity += 1 #if item did exist, increase quantity
+            basket_item.save() 
         return JsonResponse({'status': 'success', 'message': 'Product added to basket'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
@@ -228,15 +228,15 @@ def add_to_basket(request, product_id):
 @require_POST
 def update_basket(request):
     item_id = request.POST.get('item_id')
-    action = request.POST.get('action')
+    action = request.POST.get('action') #increase or decrease (if user clicked plus or minus)
     user = request.user
     
     basket_item = get_object_or_404(Baskets, basketId=item_id, username=user)
     
     if action == "increase":
-        basket_item.quantity += 1
+        basket_item.quantity += 1 #up quantity by 1
     elif action == "decrease":
-        # Check if the quantity is greater than 1 before decrementing
+        # Check if the quantity is greater than 1 before reducing
         if basket_item.quantity > 1:
             basket_item.quantity -= 1
         else:
@@ -266,29 +266,6 @@ def product_detail(request, product_id):
     context = {'product': product, 'comments': comments}
     return render(request, 'questAI/product_detail.html', context)
 
-@login_required
-@require_POST
-def update_basket(request):
-    item_id = request.POST.get('item_id')
-    action = request.POST.get('action')
-    user = request.user
-    
-    basket_item = get_object_or_404(Baskets, basketId=item_id, username=user)
-    
-    if action == "increase":
-        basket_item.quantity += 1
-    elif action == "decrease":
-        # Check if the quantity is greater than 1 before decrementing
-        if basket_item.quantity > 1:
-            basket_item.quantity -= 1
-        else:
-            # If quantity will be less than 1, remove the item from the basket
-            basket_item.delete()
-            return JsonResponse({'status': 'success', 'message': 'Item removed from basket'})
-
-    basket_item.save()
-
-    return JsonResponse({'status': 'success', 'message': 'Basket updated successfully'})
 
 @login_required
 def checkout(request):
