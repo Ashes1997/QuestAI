@@ -270,12 +270,12 @@ def product_detail(request, product_id):
 @login_required
 def checkout(request):
     basket_items = Baskets.objects.filter(username=request.user)
-    products_string = ', '.join([f"{item.productId.productName}" for item in basket_items])
+    products_string = ', '.join([f"{item.productId.productName}" for item in basket_items]) #creates string to send to openai function
     
     if basket_items.exists():
         for item in basket_items:
 
-            Purchase.objects.create(
+            Purchase.objects.create( #adds to list of purchases
                 user=request.user,
                 product=item.productId,
                 quantity=item.quantity,
@@ -284,13 +284,13 @@ def checkout(request):
             
         
         if products_string:  
-            quest = quest_create(products_string)
+            quest = quest_create(products_string) #sends items to generate quest
         else:
             quest = "Your basket is empty. Add some products to generate a quest."
 
         context = {'quest': quest, 'basket_items': basket_items}
-        basket_items.delete()  
-        request.session.pop("past_messages", None)
+        basket_items.delete()  #clears basket because user has now checked out. 
+        request.session.pop("past_messages", None) 
         return render(request, 'questAI/checkout.html', context)
     else:
         context = {'message': "Your basket is empty. Add some products to generate a quest."}
@@ -337,8 +337,8 @@ def like_dislike(request, product_id):
         review.save()
     
 
-    likes_count = Reviews.objects.filter(productId=product, review_type='like').count()
-    dislikes_count = Reviews.objects.filter(productId=product, review_type='dislike').count()
+    likes_count = Reviews.objects.filter(productId=product, review_type='like').count() #gets count of likes
+    dislikes_count = Reviews.objects.filter(productId=product, review_type='dislike').count() #gets count of dislikes
     
     action = "Liked" if review_type == 'like' else "Disliked"
     return JsonResponse({
