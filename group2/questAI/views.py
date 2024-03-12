@@ -1,4 +1,6 @@
+import json
 import os
+from django.conf import settings
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
@@ -266,10 +268,18 @@ def product_detail(request, product_id):
     context = {'product': product, 'comments': comments}
     return render(request, 'questAI/product_detail.html', context)
 
-
 @login_required
 def checkout(request):
     basket_items = Baskets.objects.filter(username=request.user)
+
+    # create a list of names of items in the basket to pass into checkout page
+    item_names = []
+    for item in basket_items:
+        item_names.append(item.productId.productName)
+
+
+    items_json = json.dumps(item_names) # parse it into json before passing it into the content for checkout page
+
     products_string = ', '.join([f"{item.productId.productName}" for item in basket_items]) #creates string to send to openai function
     
     if basket_items.exists():
@@ -281,14 +291,16 @@ def checkout(request):
                 quantity=item.quantity,
                 purchase_date=timezone.now() 
             )
-            
+
+        user = request.user
+        user_profile = UserProfile.objects.get(user = user)
         
         if products_string:  
             quest = quest_create(products_string) #sends items to generate quest
         else:
             quest = "Your basket is empty. Add some products to generate a quest."
 
-        context = {'quest': quest, 'basket_items': basket_items}
+        context = {'quest': quest, 'basket_items': basket_items, 'number_of_items': len(basket_items), 'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY, 'start_location': user_profile.address, 'basket_items': items_json }
         basket_items.delete()  #clears basket because user has now checked out. 
         request.session.pop("past_messages", None) 
         return render(request, 'questAI/checkout.html', context)
