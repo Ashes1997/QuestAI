@@ -40,5 +40,21 @@
         </form>
     </div>
 </div>
+<script>
+    document.querySelector('.add-to-cart-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '{% url "questAI:basket" %}';
+            } else {
+                alert('Something went wrong!');
+            }
+        });
+    });
+</script>
 
 {% endblock %}
