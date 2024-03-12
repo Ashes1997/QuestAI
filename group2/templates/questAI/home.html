@@ -82,11 +82,11 @@
                     $('#likes-count-' + productId).text(response.likes);
                     $('#dislikes-count-' + productId).text(response.dislikes);
                 } else {
-                    alert(response.message);
+                    //alert(response.message);
                 }
             },
             error: function(xhr, errmsg, err) {
-                alert("Error: " + xhr.status + ": " + xhr.responseText);
+                //alert("Error: " + xhr.status + ": " + xhr.responseText);
             }
         });
     }
