@@ -209,18 +209,23 @@ def topup(request):
     return HttpResponse("Test for Top Up Page")
 
 
-@login_required
+
 def add_to_basket(request, product_id):
-    print("Adding to basket...") 
     if request.method == "POST":
+        # Check user i authenticated
+        if not request.user.is_authenticated:
+            
+            return JsonResponse({'status': 'error', 'message': 'You must be logged in to add items to the basket.', 'login_required': True}, status=401)
+        
+        # add item to basket since user is logged in
         product = get_object_or_404(Products, pk=product_id)
         user = request.user
         basket_item, created = Baskets.objects.get_or_create(
             username=user, productId=product, 
-            defaults={'price': product.price, 'quantity': 1}) #if item didn't exist in basket
+            defaults={'price': product.price, 'quantity': 1}) # if the item didn't exist in the basket
         if not created:
-            basket_item.quantity += 1 #if item did exist, increase quantity
-            basket_item.save() 
+            basket_item.quantity += 1 # if the item did exist, increase the quantity
+            basket_item.save()
         return JsonResponse({'status': 'success', 'message': 'Product added to basket'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
