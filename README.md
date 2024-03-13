@@ -13,6 +13,8 @@ Password: password
 Admin Guide
 Admin login page: Login link
 Login credentials: Username: user Password: password
+The account provided is the superuser account. Manager registration is the same as ordinary user registration. 
+Use superuser to set staff permissions for the registered account in '/admin', so that the user becomes an administrator.
 Note: Don't use checkout as an admin as no user address is saved
 
 
