@@ -50,11 +50,15 @@
         }).then(response => {
             if (response.ok) {
                 window.location.href = '{% url "questAI:basket" %}';
+            } else if(response.status === 401) {
+                // Redirecting to the login page if the user is not authenticated
+                window.location.href = '{% url "questAI:login" %}';
             } else {
                 alert('Something went wrong!');
             }
         });
     });
 </script>
+
 
 {% endblock %}
