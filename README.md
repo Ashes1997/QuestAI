@@ -1,5 +1,7 @@
 # How to Use
 
+The github link is here: https://github.com/Ashes1997/QuestAI
+
 This guide provides instructions on how to utilize the service efficiently. Whether you're a standard user or an admin, follow the steps outlined below to navigate through the platform.
 
 ## For Users
